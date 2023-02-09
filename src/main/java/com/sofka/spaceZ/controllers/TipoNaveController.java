@@ -1,8 +1,7 @@
 package com.sofka.spaceZ.controllers;
 
-
-import com.sofka.spaceZ.models.Nave;
-import com.sofka.spaceZ.services.NaveServices;
+import com.sofka.spaceZ.models.TipoNave;
+import com.sofka.spaceZ.services.TipoNaveServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -15,37 +14,37 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-public class NaveController {
+public class TipoNaveController {
     @Autowired
-    private NaveServices service;
+    private TipoNaveServices service;
 
-    //EndPoint para listar todos los registros de naves espaciales por metodo get
-    @GetMapping("/nave")
-    public List<Nave> listar(){
+    //EndPoint para listar todos los registros de tipo de naves espaciales por metodo get
+    @GetMapping("/tnave")
+    public List<TipoNave> listar(){
         return service.findAll();
     }
 
-    //EndPoint para crear una nueva nave por metodo post
-    @PostMapping("/nave")
-    public ResponseEntity<Map<String,Object>> crear(@RequestBody Nave nave){
-        Nave c = null;
+    //EndPoint para crear un nuevo tipo de nave por metodo post
+    @PostMapping("/tnave")
+    public ResponseEntity<Map<String,Object>> crear(@RequestBody TipoNave tnave){
+        TipoNave c = null;
         Map<String,Object> response = new HashMap<>();
         try {
-            c = service.save(nave);
+            c = service.save(tnave);
         } catch (DataAccessException e) {
             response.put("mensaje: ", "error al realizar la creacion en base de datos");
             response.put("error: ", e.getMessage());
             return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        response.put("mensaje: ", "La nave se creo con exito");
-        response.put("Nave: ", nave);
+        response.put("mensaje: ", "El tipo de nave se creo con exito");
+        response.put("Tipo de Nave: ", tnave);
         return new ResponseEntity<Map<String,Object>>(response, HttpStatus.CREATED);
     }
 
-    //EndPoint para obtener una nave por su id por el metodo get
-    @GetMapping("/nave/{id}")
+    //EndPoint para obtener un tipo de nave por su id por el metodo get
+    @GetMapping("/tnave/{id}")
     public ResponseEntity<?>show(@PathVariable Long id){
-        Nave c = null;
+        TipoNave c = null;
         Map<String,Object> response = new HashMap<>();
         try{
             c = service.findById(id);
@@ -55,42 +54,42 @@ public class NaveController {
             return new ResponseEntity<Map<String,Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         if (c == null){
-            response.put("Mensaje","La nave con ID: ".concat(" ").concat("No existe"));
+            response.put("Mensaje","El tipo de nave con ID: ".concat(" ").concat("No existe"));
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Nave>(c,HttpStatus.OK);
+        return new ResponseEntity<TipoNave>(c,HttpStatus.OK);
     }
 
-    //EndPoint para actualizar una nave por medio de su id
-    @PutMapping("nave/{id}")
-    public ResponseEntity<?> update(@RequestBody Nave c, @PathVariable Long id){
-        Nave naveActual = service.findById(id);
-        Nave naveUpdate = null;
+    //EndPoint para actualizar un tipo de nave por medio de su id
+    @PutMapping("tnave/{id}")
+    public ResponseEntity<?> update(@RequestBody TipoNave c, @PathVariable Long id){
+        TipoNave tNaveActual = service.findById(id);
+        TipoNave tNaveUpdate = null;
         Map<String, Object> response = new HashMap<>();
 
-        if (naveActual==null){
-            response.put("Mensaje","La nave con ID: ".concat(" ").concat("No existe"));
+        if (tNaveActual==null){
+            response.put("Mensaje","El tipo de nave con ID: ".concat(" ").concat("No existe"));
             return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
         }
 
         try {
-            naveActual.setNombre(c.getNombre());
-            naveActual.setTipo(c.getTipo());
-            naveUpdate= service.save(naveActual);
+            tNaveActual.setNombre(c.getNombre());
+            tNaveActual.setDescripcion(c.getDescripcion());
+            tNaveUpdate= service.save(tNaveActual);
 
         }catch (DataAccessException e) {
             response.put("mensaje: ", "error al realizar actualizacion en la base de datos");
             response.put("error: ", e.getMessage());
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        response.put("Mensaje","nave editada con exito");
-        response.put("Nave",naveUpdate);
+        response.put("Mensaje","Tipo de nave editado con exito");
+        response.put("Tipo de nave",tNaveUpdate);
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
     }
 
-    //EndPoint para eliminar una nave por medio de su id
+    //EndPoint para eliminar un tipo de nave por medio de su id
 
-    @DeleteMapping("nave/{id}")
+    @DeleteMapping("tnave/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id){
         Map<String, Object> response = new HashMap<>();
         try {
@@ -100,8 +99,7 @@ public class NaveController {
             response.put("error: ", e.getMessage());
             return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        response.put("Mensaje","nave eliminado con exito");
+        response.put("Mensaje","Tipo de nave eliminado con exito");
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 }
-

@@ -5,10 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import com.sofka.spaceZ.models.TipoNave;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -16,20 +13,20 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "naves")
-public class Nave {
-    @jakarta.persistence.Id
+@Table(name = "tipos")
+public class TipoNave {
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long Id;
     @Column(length = 50)
     private String nombre;
-    @CreationTimestamp
-    private LocalDateTime fechaCreacion;
 
-    @ManyToOne
-    @JoinColumn(name = "tipo")
-    private TipoNave tipo;
+    private String Descripcion;
+
+    @OneToMany(mappedBy = "tipo")
+    private List<Nave> naves;
+
 
 }
-
-
