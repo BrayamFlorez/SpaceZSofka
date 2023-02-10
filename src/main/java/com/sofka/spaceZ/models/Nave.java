@@ -25,10 +25,10 @@ public class Nave {
     private String nombre;
     @CreationTimestamp
     private LocalDateTime fechaCreacion;
-
-    @ManyToOne
-    @JoinColumn(name = "tipo")
-    private TipoNave tipo;
+   // @ManyToOne
+    //@JoinColumn(name = "tipo")
+   @Column(length = 1)
+    private int tipo;
 
 }
 

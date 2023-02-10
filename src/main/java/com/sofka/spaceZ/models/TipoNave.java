@@ -25,8 +25,8 @@ public class TipoNave {
 
     private String Descripcion;
 
-    @OneToMany(mappedBy = "tipo")
-    private List<Nave> naves;
+    //@OneToMany(mappedBy = "tipo")
+    //private List<Nave> naves;
 
 
 }
